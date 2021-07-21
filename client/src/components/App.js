@@ -1,47 +1,44 @@
 import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
+import { UserProvider } from '../contexts/UserContext';
 
 import '../styles/App.scss';
-
-import ControlsBar from './ControlsBar';
-import { Map } from './Map.js';
-import NavigationBar from './NavigationBar';
-import PageLayout from './PageLayout';
+import MapPage from './pages/MapPage';
+import HeaderContentLayout from './common/HeaderContentLayout';
+import NavigationBar from './navigationBar/NavigationBar';
+import UserPage from './pages/UserPage';
+import { ToursProvider } from '../contexts/TourContext';
 
 export default function App() {
-  // const fetchData = (e, id) => {
-  //   e.preventDefault();
-  //   //setUrl(`/api/user/${id}/tours`);
-  //   // setUrl(`/dev/fulldb`);
-  // };
-
   return (
-    <PageLayout
-      top={
-        <>
-          <NavigationBar />
-          <ControlsBar />
-        </>
-      }
-      left={
-        <div
-          style={{
-            height: '100%',
-            overflow: 'auto',
-          }}
-        >
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minima,
-          quisquam veniam? Ipsa quas voluptatem voluptatum sequi dolorem, est,
-          dolor repudiandae magnam necessitatibus ex, fuga neque! Autem deleniti
-          nam omnis ab.Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-          Minima, quisquam veniam? Ipsa quas voluptatem voluptatum sequi
-          dolorem, est, dolor repudiandae magnam necessitatibus ex, fuga neque!
-          Autem deleniti nam omnis ab.Lorem, ipsum dolor sit amet consectetur
-          adipisicing elit. Minima, quisquam veniam? Ipsa quas voluptatem
-          voluptatum sequi dolorem, est, dolor repudiandae magnam necessitatibus
-          ex, fuga neque! 
-        </div>
-      }
-      right={<Map />}
-    />
+    <UserProvider>
+      <ToursProvider>
+        <Router basename={process.env.PUBLIC_URL}>
+          <Switch>
+            <HeaderContentLayout
+              header={<NavigationBar />}
+              content={
+                <>
+                  <Route exact path='/map'>
+                    <MapPage />
+                  </Route>
+                  <Route exact path='/user'>
+                    <UserPage />
+                  </Route>
+                  <Route path='*'>
+                    <Redirect to='/map' />
+                  </Route>
+                </>
+              }
+            />
+          </Switch>
+        </Router>
+      </ToursProvider>
+    </UserProvider>
   );
 }

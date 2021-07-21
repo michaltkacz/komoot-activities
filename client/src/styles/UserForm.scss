@@ -1,0 +1,20 @@
+.user-form {
+  display: flex;
+  align-items: center;
+
+  .info-icon {
+    margin-right: 0.5rem;
+    color: map-get($theme-colors, 'secondary');
+    font-size: 1.3rem;
+    transition: font-size 0.1s ease-in-out;
+
+    &:hover {
+      font-size: 1.5rem;
+      color: map-get($theme-colors, 'primary');
+    }
+  }
+
+  .form-container {
+    flex: 1;
+  }
+}

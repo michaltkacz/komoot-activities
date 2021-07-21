@@ -1,0 +1,15 @@
+.brand-logo {
+  .brand-image {
+    display: inline-block;
+    vertical-align: bottom;
+    background-color: map-get($theme-colors, 'primary');
+    border-radius: 25% 25% 0 25%;
+    padding: 2px;
+  }
+  .brand-name {
+    font-weight: 900;
+    vertical-align: bottom;
+    padding-left: 0.25rem;
+    border-bottom: 1.8px solid map-get($theme-colors, 'primary');
+  }
+}

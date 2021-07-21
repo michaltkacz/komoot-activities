@@ -1,60 +1,43 @@
 # Komoot Routes
 
-> Web application displaying info about tours saved on your Komoot account.
+> Web application for displaying tours saved on Komoot account.
 
 ## Table of contents
 
 - [Komoot Routes](#komoot-routes)
   - [Table of contents](#table-of-contents)
   - [General info](#general-info)
-  - [Demo](#demo)
-  - [Screenshots](#screenshots)
-  - [Technologies](#technologies)
   - [Setup and run](#setup-and-run)
-  - [Features](#features)
-  - [Issues](#issues)
-  - [Status](#status)
+  - [Credits](#credits)
   - [Contact](#contact)
 
 ## General info
 
-todo
-
-## Demo
-
-todo
-
-## Screenshots
-
-todo
-
-<!-- ![Example screenshot1](./images/image1.png) -->
-
-## Technologies
-
-todo
-
-<!-- - [Three.js](https://threejs.org/ 'Three.js webpage') library (project developed under version: [r125](https://github.com/mrdoob/three.js/releases 'Three.js version changelog')). -->
+![ss1](./images/image1.png)
+![ss2](./images/image2.png)
 
 ## Setup and run
 
-todo
+Node.js (developed with v.14.17.3) is required to run this project.
 
-## Features
+1. Downlaoad repository.
+2. In `./client` folder open terminal and run commands to start client application:
 
-todo
+```
+  npm install
+  npm start
+```
 
-<!-- List of features:
+2. In `./client` folder open terminal and run commands to start server:
 
-- Fancy clock visualization. -->
+```
+  npm install
+  npm run server-mon
+```
 
-## Issues
+## Credits
 
-todo
-
-## Status
-
-Work in progress
+<div>Icons made by <a href="https://www.flaticon.com/authors/kiranshastry" title="Kiranshastry">Kiranshastry</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div><div>Icons made by <a href="https://www.flaticon.com/authors/becris" title="Becris">Becris</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div><div>Icons made by <a href="https://www.flaticon.com/authors/dmitri13" title="dmitri13">dmitri13</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div><div>Icons made by <a href="https://www.flaticon.com/authors/vitaly-gorbachev" title="Vitaly Gorbachev">Vitaly Gorbachev</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div><div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div><br/>
 
 ## Contact
 

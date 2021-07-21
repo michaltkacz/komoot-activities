@@ -1,100 +1,89 @@
 const express = require('express');
 const cors = require('cors');
 const fetch = require('node-fetch');
-const DataStore = require('nedb');
+const cookieParser = require('cookie-parser');
 
 const app = express();
-const database = new DataStore('./database/database.db');
-database.loadDatabase();
+
+app.use(express.json());
+app.use(cookieParser());
 
 app.get('/', (req, res) => {
   res.json('Server works');
 });
 
-app.get('/dev/fulldb', (req, res) => {
-  database.find({}, (err, data) => {
-    if (err) {
-      res.end();
-      return;
-    }
-    res.json(data);
-  });
-});
-
-app.get('/api/user/:userId/tours', cors(), async (req, res) => {
+app.get('/api/deepsync/:userId', cors(), async (req, res) => {
   const userId = req.params.userId;
+  const currentPageIndex = req.query.page ?? 0;
+  const currentPageContentLimit = req.query.limit ?? 10;
 
-  let currentPage = 0;
-  let toursRaw = [];
+  const toursUrl = `https://www.komoot.com/api/v007/users/${userId}/tours`;
+  const toursUrlParams = `/?sport_types=&type=tour_recorded&sort_field=date&sort_direction=desc&status=public&page=${currentPageIndex}&limit=${currentPageContentLimit}`;
 
-  while (true) {
-    // fetch page
-    const url = `https://www.komoot.com/api/v007/users/${userId}/activities/?page=${currentPage}&limit=50`;
-    let pageJson = {};
-    try {
-      const response = await fetch(url);
-      pageJson = await response.json();
-    } catch {
-      console.error('User page fetch error');
+  const tours = [];
+  let totalPages = 0;
+  let totalItems = 0;
+
+  try {
+    // call external api
+    const response = await fetch(toursUrl + toursUrlParams);
+    if (!response.ok) {
+      throw new Error('Call to external API failed');
     }
-
-    // extract all tours from page
-    const currentPageTours = pageJson._embedded.items;
-    toursRaw.push(...currentPageTours);
-
-    // go to next page
-    currentPage += 1;
-
-    // break, if no more pages
-    if (currentPage >= pageJson.page.totalPages) {
-      break;
-    }
+    // get tours data and get link to fetch coords
+    const currentPageContent = await response.json();
+    const currentPageTours = currentPageContent._embedded.tours.map((tour) => {
+      return {
+        id: tour.id ?? null,
+        date: tour.date ?? null,
+        name: tour.name ?? null,
+        distance: tour.distance ?? null,
+        duration: tour.duration ?? null,
+        sport: tour.sport ?? null,
+        startPoint: tour['start_point'] ?? null,
+        elevationUp: tour['elevation_up'] ?? null,
+        elevationDown: tour['elevation_down'] ?? null,
+        timeInMotion: tour['time_in_motion'] ?? null,
+        lastModified: tour['changed_at'] ?? null,
+        coords: tour['_links']['coordinates']['href'] ?? null,
+      };
+    });
+    // get pagination info
+    totalPages = currentPageContent.page.totalPages;
+    totalItems = currentPageContent.page.totalElements;
+    tours.push(...currentPageTours);
+  } catch {
+    console.error('User page fetch error');
   }
 
-  // make response (array of objects)
-  const tours = await Promise.all(
-    toursRaw.map(async (item) => {
-      // creator info
-      const c = item._embedded.creator;
-      const tour_creator = {
-        id: c.username,
-        display_name: c.display_name,
-      };
-
-      // tour details
-      const t = item._embedded.tour;
-      const tour_details = {
-        date: t.date,
-        name: t.name,
-        distance: t.distance,
-        duration: t.duration,
-        sport: t.sport,
-        start_point: t.start_point,
-        elevation_up: t.elevation_up,
-        elevation_down: t.elevation_down,
-        time_in_motion: t.time_in_motion,
-        id: t.id,
-      };
-
-      // tour gepoints
-      const url = item._embedded.tour._links.coordinates.href;
-      let json = {};
+  // fetch coords and combine them with tour data
+  const toursFinal = await Promise.all(
+    tours.map(async (tour) => {
+      const coordsUrl = tour.coords;
       try {
-        const response = await fetch(url);
-        json = await response.json();
+        const response = await fetch(coordsUrl);
+        if (response.ok) {
+          const pageContent = await response.json();
+          const tourCoords = pageContent.items ?? {};
+          return { ...tour, coords: tourCoords };
+        }
       } catch {
         console.error('Tour geopoints fetch error');
+        return { ...tour, coords: null };
       }
-      const tour_geopoints = json.items ?? {};
-
-      // return in one object
-      return { tour_creator, tour_details, tour_geopoints };
     })
   );
 
-  // database.insert(tours);
-  // return json
-  res.json(tours);
+  // return data
+  res.json({
+    tours: toursFinal,
+    pages: {
+      currentPage: currentPageIndex,
+      totalPages: totalPages,
+      itemsPerPage: currentPageContentLimit,
+      totalItems: totalItems,
+    },
+  });
 });
 
 const port = 5000;

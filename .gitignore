@@ -28,4 +28,4 @@ server/node_modules
 server/.env
 
 # -- OTHER --
-myUserData.txt
+temp.txt
