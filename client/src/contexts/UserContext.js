@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 const UserIdContext = React.createContext();
 
@@ -7,28 +7,26 @@ export const useUser = () => {
 };
 
 export const UserProvider = ({ children }) => {
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState('');
 
-  // useEffect(() => {
-  //   console.log(userId);
-  // }, [userId]);
+  useEffect(() => {
+    const localUserId = localStorage.getItem('user-id');
+    // local storage items are strings, thus check for 'null'
+    if (localUserId !== 'null') {
+      console.log(localUserId);
+      setUserId(localUserId);
+    }
+  }, []);
 
-  // useEffect(() => {
-  //   const localUserId = localStorage.getItem('user-id');
-  //   // local storage items are strings, thus check for 'null'
-  //   // if (localUserId !== 'null') {
-  //   //   setUserId(localUserId);
-  //   // }
-  // }, []);
-
-  // useEffect(() => {
-  //   if (userId !== null) {
-  //     localStorage.setItem('user-id', userId);
-  //   }
-  // }, [userId]);
+  const saveUserId = (newUserId) => {
+    if (newUserId) {
+      localStorage.setItem('user-id', userId);
+      setUserId(newUserId);
+    }
+  };
 
   return (
-    <UserIdContext.Provider value={{ userId, setUserId }}>
+    <UserIdContext.Provider value={{ userId, saveUserId }}>
       {children}
     </UserIdContext.Provider>
   );

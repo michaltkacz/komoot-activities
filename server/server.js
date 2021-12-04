@@ -1,12 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const fetch = require('node-fetch');
-const cookieParser = require('cookie-parser');
 
 const app = express();
 
 app.use(express.json());
-app.use(cookieParser());
 
 app.get('/', (req, res) => {
   res.json('Server works');
@@ -15,7 +13,7 @@ app.get('/', (req, res) => {
 app.get('/api/deepsync/:userId', cors(), async (req, res) => {
   const userId = req.params.userId;
   const currentPageIndex = req.query.page ?? 0;
-  const currentPageContentLimit = req.query.limit ?? 10;
+  const currentPageContentLimit = req.query.limit ?? 25;
 
   const toursUrl = `https://www.komoot.com/api/v007/users/${userId}/tours`;
   const toursUrlParams = `/?sport_types=&type=tour_recorded&sort_field=date&sort_direction=desc&status=public&page=${currentPageIndex}&limit=${currentPageContentLimit}`;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Form,
   InputGroup,
@@ -15,9 +15,13 @@ import { useTours } from '../../contexts/TourContext';
 import { BsInfoCircle } from 'react-icons/bs';
 
 const UserForm = () => {
-  const { setUserId } = useUser();
-  const [inputValue, setInputValue] = useState('');
+  const { userId, saveUserId } = useUser();
   const { runShallowSync, runDeepSync } = useTours();
+  const [inputValue, setInputValue] = useState('');
+
+  useEffect(() => {
+    setInputValue(userId);
+  }, [userId]);
 
   return (
     <div className='user-form'>
@@ -45,7 +49,6 @@ const UserForm = () => {
             value={inputValue}
             onChange={(e) => {
               setInputValue(e.target.value);
-              setUserId(e.target.value);
             }}
           />
           <InputGroup.Append>
@@ -53,7 +56,7 @@ const UserForm = () => {
               <Button
                 variant='outline-primary'
                 onClick={() => {
-                  setUserId(inputValue);
+                  saveUserId(inputValue);
                   runShallowSync();
                 }}
               >
@@ -68,7 +71,7 @@ const UserForm = () => {
               >
                 <Dropdown.Item
                   onClick={() => {
-                    setUserId(inputValue);
+                    saveUserId(inputValue);
                     runDeepSync();
                   }}
                 >

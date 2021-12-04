@@ -5,7 +5,7 @@ import TourCard from './TourCard';
 const TourListContent = () => {
   const { tours } = useTours();
 
-  if (!Array.isArray(tours)) return <></>;
+  if (!Array.isArray(tours)) return null;
 
   return tours.map((tour, index) => (
     <TourCard

@@ -1,6 +1,6 @@
-# Komoot Routes
+# Komoot Activities
 
-> Web application for displaying tours saved on Komoot account.
+> Web application displaying info about activities saved on your Komoot account.
 
 ## Table of contents
 
@@ -11,16 +11,15 @@
   - [Credits](#credits)
   - [Contact](#contact)
 
-## General info
+## Screenshots
 
-![ss1](./images/image1.png)
-![ss2](./images/image2.png)
+![ss1](./images/img1.png)
 
 ## Setup and run
 
 Node.js (developed with v.14.17.3) is required to run this project.
 
-1. Downlaoad repository.
+1. Download repository.
 2. In `./client` folder open terminal and run commands to start client application:
 
 ```
@@ -34,6 +33,8 @@ Node.js (developed with v.14.17.3) is required to run this project.
   npm install
   npm run server-mon
 ```
+
+In order to fetch data from _Komoot_, profile and activities should be **Public**.
 
 ## Credits
 

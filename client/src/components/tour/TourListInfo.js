@@ -1,9 +1,9 @@
 import React from 'react';
-import { Alert, ProgressBar, Spinner } from 'react-bootstrap';
+import { Alert, Spinner } from 'react-bootstrap';
 import { useTours } from './../../contexts/TourContext';
 
 const TourListInfo = () => {
-  const { tours, toursTotalNumber, loading, error } = useTours();
+  const { tours, loading, error } = useTours();
 
   if (error) {
     return (
@@ -15,20 +15,13 @@ const TourListInfo = () => {
 
   if (loading) {
     return (
-      <div className='py-1'>
-        <ProgressBar
-          now={tours?.length || 0}
-          max={toursTotalNumber}
-          label={`Tours: ${tours?.length || 0}/${toursTotalNumber}`}
-        />
-        <div className='d-flex justify-content-center w-100 py-1'>
-          <Spinner animation='border' variant='primary' size='sm' />
-        </div>
+      <div className='d-flex justify-content-center w-100 py-1'>
+        <Spinner animation='border' variant='primary' size='sm' />
       </div>
     );
   }
 
-  if (!tours?.length)
+  if (tours.length === 0)
     return (
       <Alert variant='secondary' className='mb-1'>
         No tours for display

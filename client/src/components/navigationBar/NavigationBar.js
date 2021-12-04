@@ -22,9 +22,6 @@ const NavigationBar = () => {
           <Nav.Link eventKey='1' as={Link} to='/map'>
             Map
           </Nav.Link>
-          <Nav.Link disabled eventKey='2' as={Link} to='/user'>
-            User
-          </Nav.Link>
         </Nav>
         <UserForm />
       </Navbar.Collapse>

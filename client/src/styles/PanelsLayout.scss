@@ -1,6 +1,6 @@
 .panels-layout {
   display: flex;
-  height: 100%;
+  height: calc(100% - 56px);
   @media (max-width: 576px) {
     flex-direction: column;
   }

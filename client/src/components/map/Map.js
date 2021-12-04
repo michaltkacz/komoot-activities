@@ -8,6 +8,7 @@ import {
   TileLayer,
   Polyline,
   Tooltip,
+  ScaleControl,
 } from 'react-leaflet';
 
 const Map = () => {
@@ -27,12 +28,13 @@ const Map = () => {
     <MapContainer
       center={center}
       zoom={initZoom}
-      minZoom={1}
+      minZoom={0}
       maxZoom={15}
       zoomControl={false}
       style={{ height: '100%', width: '100%' }}
     >
       <CenterMap center={center} zoom={initZoom} />
+      <ScaleControl position='bottomleft' />
       <ZoomControl position='topright' />
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

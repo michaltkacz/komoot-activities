@@ -12,7 +12,7 @@ const BrandLogo = () => {
         height='30'
         className='brand-image'
       />
-      <span className='brand-name'>Komoot Routes</span>
+      <span className='brand-name'>Komoot Activities</span>
     </span>
   );
 };
